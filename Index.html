@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Ruée - Newsletter Mensuelle de Curation Culturelle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gabarito:wght@400;500;600;700;800;900&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== PASSWORD GATE ===== */
+        #gate {
+            position: fixed; inset: 0; z-index: 10000;
+            background: linear-gradient(135deg, #2D68C4 0%, #183D7A 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            gap: 1.5rem;
+            font-family: 'Fredoka', sans-serif;
+        }
+        #gate.hidden { display: none; }
+        #gate .gate-icon { font-size: 4rem; animation: gateBounce 2s ease-in-out infinite; }
+        @keyframes gateBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        #gate h2 { font-family: 'Gabarito', sans-serif; font-size: 2rem; color: #FFFFFF; font-weight: 900; }
+        #gate h2 span { color: #F5C518; }
+        #gate p { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
+        #gate .gate-form { display: flex; gap: 0.6rem; }
+        #gate input {
+            padding: 0.8rem 1.3rem; border: 3px solid rgba(245,197,24,0.3);
+            border-radius: 50px; background: rgba(255,255,255,0.08);
+            color: #FFFFFF; font-family: 'Fredoka', sans-serif; font-size: 1rem;
+            outline: none; width: 220px; text-align: center; letter-spacing: 0.15em;
+        }
+        #gate input::placeholder { color: rgba(255,255,255,0.3); }
+        #gate input:focus { border-color: #F5C518; }
+        #gate button {
+            padding: 0.8rem 1.6rem; background: #F5C518; color: #2D68C4;
+            border: none; border-radius: 50px; font-family: 'Fredoka', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 3px 0 #C9A000; transition: all 0.2s ease;
+        }
+        #gate button:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #C9A000; }
+        #gate .gate-error { color: #FF6B6B; font-size: 0.85rem; font-weight: 600; min-height: 1.2em; }
+
+```
+    #site { display: none; }
+    #site.visible { display: block; }
+
+    /* ===== COLORS — BLUE + YELLOW (matching la-ruee.club) ===== */
+    :root {
+        --blue-deep: #2D68C4;
+        --blue-dark: #1E4F9E;
+        --blue-darker: #183D7A;
+        --blue-light: #5A8FDB;
+        --blue-pale: #E0EBFA;
+        --blue-wash: #F0F5FC;
+        --yellow: #F5C518;
+        --yellow-dark: #C9A000;
+        --yellow-light: #FFDE59;
+        --yellow-glow: #FFF6D5;
+        --white: #FFFFFF;
+        --text-dark: #1A2D4D;
+        --text-mid: #3A5070;
+        --text-light: #7090B5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: 'Fredoka', sans-serif;
+        background: var(--blue-wash);
+        color: var(--text-dark);
+        overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        transition: all 0.4s ease;
+    }
+    nav.scrolled {
+        background: rgba(242, 245, 250, 0.95);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-logo-text { font-family: 'Gabarito', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--blue-deep); }
+    .nav-logo-text span { color: var(--blue-deep); }
+    .nav-logo-text .ruee-text { color: var(--yellow-dark); }
+    .nav-logo-icon { font-size: 1.5rem; animation: wigglePick 3s ease-in-out infinite; }
+    @keyframes wigglePick { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(10deg); } }
+
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; list-style: none; }
+    .nav-links a {
+        text-decoration: none; color: var(--text-mid); font-size: 0.9rem; font-weight: 600;
+        padding: 0.4rem 0.8rem; border-radius: 12px; transition: all 0.3s ease;
+    }
+    .nav-links a:hover { background: var(--yellow-glow); color: var(--blue-deep); transform: translateY(-2px); }
+
+    .nav-cta-btn {
+        background: var(--yellow) !important; color: var(--blue-deep) !important;
+        padding: 0.55rem 1.3rem !important; border-radius: 50px !important; font-weight: 700 !important;
+        box-shadow: 0 3px 0 var(--yellow-dark), 0 6px 15px rgba(245, 197, 24, 0.3);
+        transition: all 0.2s ease !important;
+    }
+    .nav-cta-btn:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 5px 0 var(--yellow-dark), 0 10px 25px rgba(245, 197, 24, 0.4) !important;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+        min-height: 100vh;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        text-align: center; padding: 7rem 2rem 4rem;
+        position: relative; overflow: hidden;
+        background: linear-gradient(170deg, var(--blue-deep) 0%, #183D7A 100%);
+        color: var(--white);
+    }
+
+    .floating-nuggets { position: absolute; inset: 0; pointer-events: none; }
+    .nugget-float { position: absolute; opacity: 0; animation: nuggetDrift 7s ease-in-out infinite; }
+    @keyframes nuggetDrift {
+        0% { opacity: 0; transform: translateY(40px) rotate(0deg) scale(0.5); }
+        15% { opacity: 0.7; } 85% { opacity: 0.3; }
+        100% { opacity: 0; transform: translateY(-120px) rotate(20deg) scale(0.3); }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+    .hero-badge {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: rgba(245, 197, 24, 0.15); padding: 0.5rem 1.2rem;
+        border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+        color: var(--yellow); margin-bottom: 2rem;
+        border: 2px dashed rgba(245, 197, 24, 0.4);
+        opacity: 0; animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+    }
+
+    .hero-title {
+        font-family: 'Gabarito', sans-serif;
+        font-size: clamp(4rem, 10vw, 8rem); font-weight: 900;
+        line-height: 0.95; color: var(--white);
+        margin-bottom: 1.5rem; position: relative;
+        opacity: 0; animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s forwards;
+    }
+    .hero-title .la { font-size: 0.5em; color: var(--blue-light); display: block; margin-bottom: -0.3em; }
+    .hero-title .ruee {
+        background: linear-gradient(135deg, var(--yellow), var(--yellow-light));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        position: relative;
+    }
+    .hero-pickaxe {
+        position: absolute; right: -0.6em; top: -0.2em; font-size: 0.5em;
+        -webkit-text-fill-color: initial; animation: digDig 2s ease-in-out infinite;
+    }
+    @keyframes digDig { 0%,100% { transform: rotate(-10deg); } 50% { transform: rotate(15deg); } }
+
+    .hero-subtitle {
+        font-size: 1.2rem; line-height: 1.7; color: rgba(255,255,255,0.8);
+        max-width: 580px; margin: 0 auto 2.5rem;
+        opacity: 0; animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.55s forwards;
+    }
+    .hero-subtitle strong {
+        color: #FFFFFF;
+        background: linear-gradient(to top, rgba(245, 197, 24, 0.3) 30%, transparent 30%);
+        padding: 0 3px;
+    }
+
+    .hero-ctas {
+        display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+        opacity: 0; animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards;
+    }
+
+    .btn-gold {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: var(--yellow); color: var(--blue-deep);
+        padding: 1rem 2.2rem; border-radius: 50px;
+        font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 700;
+        text-decoration: none; border: none; cursor: pointer;
+        box-shadow: 0 4px 0 var(--yellow-dark), 0 8px 25px rgba(245, 197, 24, 0.3);
+        transition: all 0.2s ease;
+    }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 7px 0 var(--yellow-dark), 0 14px 35px rgba(245, 197, 24, 0.4); }
+    .btn-gold:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--yellow-dark); }
+
+    .btn-outline {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: transparent; color: #FFFFFF;
+        padding: 1rem 2.2rem; border-radius: 50px;
+        font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 600;
+        text-decoration: none; border: 2.5px solid rgba(255,255,255,0.4);
+        transition: all 0.3s ease;
+    }
+    .btn-outline:hover { border-color: var(--yellow); background: rgba(245, 197, 24, 0.1); color: var(--yellow); transform: translateY(-2px); }
+
+    .hero-scroll-hint {
+        position: absolute; bottom: 2rem; left: 50%;
+        transform: translateX(-50%); font-size: 1.5rem;
+        opacity: 0; animation: popIn 0.5s ease 1.2s forwards, bounce 2s ease-in-out 2s infinite;
+    }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+    @keyframes popIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    /* ===== DEFINITION ===== */
+    .definition { padding: 3rem 2rem 5rem; display: flex; justify-content: center; }
+    .def-card {
+        max-width: 600px; width: 100%; background: var(--white);
+        border-radius: 20px; padding: 2.5rem 3rem;
+        border: 3px solid var(--yellow-light); position: relative;
+        box-shadow: 0 8px 30px rgba(27, 42, 74, 0.06);
+    }
+    .def-card::before {
+        content: '💎'; position: absolute; top: -18px; left: 50%;
+        transform: translateX(-50%); font-size: 1.6rem;
+        background: var(--blue-wash); padding: 0 1rem;
+    }
+    .def-word { font-family: 'Gabarito', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--blue-deep); }
+    .def-word .star { color: var(--yellow-dark); }
+    .def-type { font-style: italic; color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.8rem; }
+    .def-text { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--text-mid); line-height: 1.5; }
+
+    /* ===== ABOUT ===== */
+    .about { padding: 3rem 2rem 6rem; }
+    .about-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+    .about-text h2 {
+        font-family: 'Gabarito', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 900; line-height: 1.15; color: var(--blue-deep); margin-bottom: 1.5rem;
+    }
+    .about-text h2 em { font-family: 'Caveat', cursive; font-style: normal; color: var(--yellow-dark); font-size: 1.15em; }
+    .about-text p { font-size: 1.05rem; line-height: 1.8; color: var(--text-mid); margin-bottom: 1.2rem; }
+    .about-text strong { color: var(--blue-deep); }
+    .about-text a {
+        color: var(--blue-light); text-decoration: none; font-weight: 700;
+        border-bottom: 2px dashed var(--blue-light); transition: all 0.3s;
+    }
+    .about-text a:hover { color: var(--yellow-dark); border-color: var(--yellow-dark); }
+
+    .wagon-container {
+        background: var(--white); border-radius: 24px; padding: 2.5rem;
+        border: 3px solid var(--yellow-light);
+        box-shadow: 0 12px 40px rgba(27, 42, 74, 0.08); position: relative;
+    }
+    .wagon-title {
+        font-family: 'Gabarito', sans-serif; font-size: 1rem; font-weight: 700;
+        text-align: center; color: var(--text-mid); margin-bottom: 1.5rem;
+        text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .category-chips { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+    .chip {
+        padding: 0.7rem 1.4rem; border-radius: 50px; font-size: 0.92rem; font-weight: 600;
+        display: flex; align-items: center; gap: 0.4rem;
+        transition: all 0.3s ease; cursor: default; border: 2px solid transparent;
+    }
+    .chip:hover { transform: translateY(-4px) rotate(-2deg); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+
+    .chip-cinema { background: #FFE4E4; color: #9B2C2C; border-color: #FFCDD2; }
+    .chip-series { background: #E8F5E9; color: #1E7D3A; border-color: #C8E6C9; }
+    .chip-musique { background: #EDE7F6; color: #5B3A96; border-color: #D1C4E9; }
+    .chip-lecture { background: #E3F2FD; color: #1A5FA8; border-color: #BBDEFB; }
+    .chip-web { background: var(--yellow-glow); color: #8B6D00; border-color: var(--yellow-light); }
+
+    .wagon-emoji {
+        position: absolute; bottom: -20px; left: 50%;
+        transform: translateX(-50%); font-size: 2rem;
+        animation: trainChug 1.5s ease-in-out infinite;
+    }
+    @keyframes trainChug { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-5px); } }
+
+    /* ===== PEPITES ===== */
+    .pepites {
+        padding: 5rem 2rem 6rem;
+        background: linear-gradient(170deg, var(--blue-deep) 0%, #183D7A 100%);
+        color: var(--white); position: relative; overflow: hidden;
+    }
+    .pepites::before {
+        content: ''; position: absolute; inset: 0;
+        background:
+            radial-gradient(ellipse at 20% 30%, rgba(245, 197, 24, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, rgba(74, 111, 165, 0.08) 0%, transparent 50%);
+    }
+    .pepites-wave { position: absolute; top: -2px; left: 0; right: 0; height: 50px; overflow: hidden; }
+    .pepites-wave svg { display: block; width: 100%; height: 50px; }
+
+    .pepites-header { max-width: 1200px; margin: 0 auto 3.5rem; text-align: center; position: relative; z-index: 2; }
+    .section-tag {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--yellow); margin-bottom: 0.8rem;
+    }
+    .pepites-header h2 {
+        font-family: 'Gabarito', sans-serif; font-size: clamp(2.2rem, 5vw, 3.2rem);
+        font-weight: 900; color: #FFFFFF;
+    }
+
+    .pepites-grid {
+        max-width: 1200px; margin: 0 auto;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+        position: relative; z-index: 2;
+    }
+
+    .pepite-card {
+        background: rgba(255, 255, 255, 0.07); border-radius: 20px; overflow: hidden;
+        transition: all 0.35s ease; text-decoration: none; color: inherit;
+        display: flex; flex-direction: column;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+    .pepite-card:hover {
+        transform: translateY(-8px) rotate(-0.5deg);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        border-color: rgba(245, 197, 24, 0.3);
+    }
+
+    .pepite-img-wrap { overflow: hidden; position: relative; height: 190px; }
+    .pepite-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .pepite-card:hover .pepite-img { transform: scale(1.08); }
+
+    .pepite-cat {
+        position: absolute; top: 0.8rem; left: 0.8rem;
+        padding: 0.3rem 0.8rem; border-radius: 50px;
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.06em; z-index: 2;
+    }
+    .cat-culture { background: var(--yellow); color: var(--blue-deep); }
+    .cat-sciences { background: #2A8E89; color: #FFFFFF; }
+    .cat-musique { background: #6A4AA8; color: #FFFFFF; }
+    .cat-serie { background: #D46420; color: #FFFFFF; }
+    .cat-social { background: #C43A3A; color: #FFFFFF; }
+    .cat-lecture { background: #3A7BC8; color: #FFFFFF; }
+
+    .pepite-body { padding: 1.3rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .pepite-date { font-size: 0.72rem; color: var(--yellow-light); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .pepite-title { font-family: 'Gabarito', sans-serif; font-size: 1.1rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.6rem; color: #FFFFFF; }
+    .pepite-excerpt { font-size: 0.85rem; line-height: 1.65; color: rgba(255, 255, 255, 0.65); flex: 1; }
+    .pepite-read { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--yellow); transition: gap 0.3s ease; }
+    .pepite-card:hover .pepite-read { gap: 0.7rem; }
+
+    .see-all-wrap { text-align: center; margin-top: 3rem; position: relative; z-index: 2; }
+    .see-all-wrap a {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        color: var(--yellow); text-decoration: none; font-weight: 700;
+        font-size: 0.95rem; padding: 0.8rem 2rem;
+        border: 2.5px solid rgba(245, 197, 24, 0.35); border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    .see-all-wrap a:hover {
+        background: var(--yellow); color: var(--blue-deep);
+        border-color: var(--yellow); transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(245, 197, 24, 0.3);
+    }
+
+    /* ===== NEWSLETTER — LIGHT BACKGROUND for readability ===== */
+    .newsletter {
+        padding: 6rem 2rem 7rem; text-align: center;
+        position: relative; overflow: hidden;
+        background: var(--white);
+    }
+    .newsletter::before {
+        content: ''; position: absolute; inset: 0;
+        background:
+            radial-gradient(circle at 30% 50%, rgba(245, 197, 24, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 70% 50%, rgba(27, 42, 74, 0.04) 0%, transparent 40%);
+    }
+    .nl-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 2; }
+    .nl-emoji { font-size: 3.5rem; margin-bottom: 1.5rem; display: inline-block; animation: swing 2.5s ease-in-out infinite; }
+    @keyframes swing { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+
+    .newsletter h2 {
+        font-family: 'Gabarito', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem);
+        font-weight: 900; line-height: 1.2; color: var(--blue-deep); margin-bottom: 1rem;
+    }
+    .newsletter h2 em { font-family: 'Caveat', cursive; font-style: normal; color: var(--yellow-dark); font-size: 1.1em; }
+    .newsletter p { color: var(--text-mid); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; }
+
+    .nl-form { display: flex; gap: 0.7rem; max-width: 460px; margin: 0 auto; }
+    .nl-form input {
+        flex: 1; padding: 1rem 1.4rem; border: 3px solid var(--blue-pale);
+        border-radius: 50px; font-family: 'Fredoka', sans-serif; font-size: 0.95rem;
+        background: var(--blue-wash); color: var(--text-dark); outline: none; transition: border-color 0.3s;
+    }
+    .nl-form input::placeholder { color: var(--text-light); }
+    .nl-form input:focus { border-color: var(--yellow); }
+    .nl-form button {
+        padding: 1rem 1.8rem; background: var(--yellow); color: var(--blue-deep);
+        border: none; border-radius: 50px; font-family: 'Fredoka', sans-serif;
+        font-size: 0.95rem; font-weight: 700; cursor: pointer;
+        box-shadow: 0 4px 0 var(--yellow-dark), 0 6px 20px rgba(245, 197, 24, 0.3);
+        transition: all 0.2s ease; white-space: nowrap;
+    }
+    .nl-form button:hover { transform: translateY(-3px); box-shadow: 0 7px 0 var(--yellow-dark), 0 12px 30px rgba(245, 197, 24, 0.4); }
+    .nl-form button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--yellow-dark); }
+
+    /* ===== FOOTER ===== */
+    footer { background: var(--blue-deep); color: rgba(255,255,255,0.6); padding: 2.5rem 2rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Gabarito', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--white); }
+    .footer-logo span { color: var(--yellow); }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social a {
+        color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+        padding: 0.4rem 1rem; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.15);
+        transition: all 0.3s; display: flex; align-items: center; gap: 0.3rem;
+    }
+    .footer-social a:hover { color: var(--yellow); border-color: var(--yellow); background: rgba(245, 197, 24, 0.1); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+        .pepites-grid { grid-template-columns: 1fr; max-width: 450px; }
+        .about-inner { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+        .nav-links { display: none; }
+        .nl-form { flex-direction: column; }
+        .footer-inner { flex-direction: column; text-align: center; }
+        #gate .gate-form { flex-direction: column; align-items: center; }
+    }
+    @media (min-width: 901px) and (max-width: 1100px) {
+        .pepites-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .reveal.vis { opacity: 1; transform: translateY(0); }
+    .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .stagger.vis > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger.vis > *:nth-child(2) { transition-delay: 0.12s; }
+    .stagger.vis > *:nth-child(3) { transition-delay: 0.19s; }
+    .stagger.vis > *:nth-child(4) { transition-delay: 0.26s; }
+    .stagger.vis > *:nth-child(5) { transition-delay: 0.33s; }
+    .stagger.vis > *:nth-child(6) { transition-delay: 0.40s; }
+    .stagger.vis > * { opacity: 1; transform: translateY(0); }
+
+    .sparkle { position: fixed; pointer-events: none; font-size: 12px; z-index: 9999; animation: sparkleFade 0.8s ease forwards; }
+    @keyframes sparkleFade { 0% { opacity: 1; transform: scale(1) translateY(0); } 100% { opacity: 0; transform: scale(0.3) translateY(-20px); } }
+</style>
+```
+
+</head>
+<body>
+
+```
+<div id="gate">
+    <div class="gate-icon">⛏️</div>
+    <h2>La <span>Ruée</span> — Aperçu privé</h2>
+    <p>Entrez le code d'accès pour découvrir la maquette</p>
+    <div class="gate-form">
+        <input type="password" id="gateInput" placeholder="Code d'accès" autocomplete="off">
+        <button onclick="checkGate()">Entrer 🚂</button>
+    </div>
+    <div class="gate-error" id="gateError"></div>
+</div>
+
+<div id="site">
+
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <span class="nav-logo-icon">⛏️</span>
+            <span class="nav-logo-text">La <span class="ruee-text">Ruée</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#pepites">Pépites</a></li>
+            <li><a href="#about">La Ruée</a></li>
+            <li><a href="https://la-ruee.club/archives/">Archives</a></li>
+            <li><a href="#subscribe" class="nav-cta-btn">J'en suis ! 🚂</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="floating-nuggets" id="floatingNuggets"></div>
+        <div class="hero-content">
+            <div class="hero-badge">⛏️ Newsletter mensuelle de curation culturelle</div>
+            <h1 class="hero-title">
+                <span class="la">La</span>
+                <span class="ruee">Ruée<span class="hero-pickaxe">⛏️</span></span>
+            </h1>
+            <p class="hero-subtitle">
+                Une fine équipe de bons vivants sélectionne pour vous chaque mois
+                <strong>3 ou 4 pépites culturelles</strong>, qui feront de vous quelqu'un
+                de bien plus distingué et intéressant en société.
+            </p>
+            <div class="hero-ctas">
+                <a href="#subscribe" class="btn-gold">J'en suis ! 🚂</a>
+                <a href="#pepites" class="btn-outline">Voir les pépites 💎</a>
+            </div>
+        </div>
+        <div class="hero-scroll-hint">👇</div>
+    </section>
+
+    <section class="definition">
+        <div class="def-card reveal">
+            <div class="def-word"><span class="star">*</span> Pépite</div>
+            <div class="def-type">(n.f)</div>
+            <div class="def-text">Contenu cool au format divers et varié défini comme tel de façon totalement arbitraire.</div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-inner">
+            <div class="about-text reveal">
+                <h2>Qu'attendre de <em>La Ruée</em> ? 🤔</h2>
+                <p><strong>Cinéma, séries, musique, lecture, culture web</strong> : on fouille l'internet pour vous en extraire les meilleures pépites !</p>
+                <p>Mais vous n'êtes pas obligés de nous croire sur parole ! Retrouvez tous nos anciens wagons dans <a href="https://la-ruee.club/archives/">nos archives</a> 📦</p>
+            </div>
+            <div class="wagon-visual reveal">
+                <div class="wagon-container">
+                    <div class="wagon-title">🧳 Dans nos wagons</div>
+                    <div class="category-chips stagger">
+                        <div class="chip chip-cinema">🎬 Cinéma</div>
+                        <div class="chip chip-series">📺 Séries</div>
+                        <div class="chip chip-musique">🎵 Musique</div>
+                        <div class="chip chip-lecture">📖 Lecture</div>
+                        <div class="chip chip-web">🌐 Culture Web</div>
+                    </div>
+                    <div class="wagon-emoji">🚃</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pepites" id="pepites">
+        <div class="pepites-wave">
+            <svg viewBox="0 0 1200 50" preserveAspectRatio="none">
+                <path d="M0,50 C200,0 400,40 600,20 C800,0 1000,35 1200,10 L1200,0 L0,0 Z" fill="#F0F5FC"/>
+            </svg>
+        </div>
+        <div class="pepites-header">
+            <div class="section-tag">✨ Les dernières trouvailles</div>
+            <h2>Les Pépites 💎</h2>
+        </div>
+        <div class="pepites-grid stagger reveal">
+            <a href="https://la-ruee.club/2022/07/19/parodies-de-tintin/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2022/07/bdde7a97-d082-3f79-1f5d-7294595888fd-400x250.png" alt="Parodies de Tintin" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-culture">Culture</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Juillet 2022</span>
+                    <h3 class="pepite-title">Plongée dans l'univers des parodies de Tintin</h3>
+                    <p class="pepite-excerpt">Saviez-vous qu'avant d'être le nom d'un célèbre chien, Milou était le surnom donné par Hergé à sa première copine ?</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+            <a href="https://la-ruee.club/2022/06/01/cryptozoologie/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2022/06/3f4b80c1-b048-221a-c318-f076f725fd82-400x250.jpg" alt="Cryptozoologie" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-sciences">Sciences</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Juin 2022</span>
+                    <h3 class="pepite-title">Guide d'initiation express à la cryptozoologie</h3>
+                    <p class="pepite-excerpt">Vous connaissez les animaux qui existent, comme les chiens, les chats et les crapauds. Mais qu'en est-il des animaux qui existent… peut-être ?</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+            <a href="https://la-ruee.club/2021/03/23/everyday-chemistry/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2021/03/visuel_everyday_chemistry_B-400x250.png" alt="Everyday Chemistry" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-musique">Musique</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Mars 2021</span>
+                    <h3 class="pepite-title">Everyday Chemistry : L'album secret des Beatles</h3>
+                    <p class="pepite-excerpt">En 2009, James Richards publie un article qui aurait dû bouleverser notre monde s'il n'était pas passé inaperçu…</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+            <a href="https://la-ruee.club/2020/09/25/scissors-seven/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2022/08/5054e885-ab1d-4432-9635-83688b427a7e-400x250.jpg" alt="Scissors Seven" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-serie">Série</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Septembre 2020</span>
+                    <h3 class="pepite-title">Scissors Seven : une sup'hair série</h3>
+                    <p class="pepite-excerpt">Une série au format très court dont les 2 premières saisons sont disponibles sur Netflix…</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+            <a href="https://la-ruee.club/2020/09/20/laika-studios/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2022/08/5ff947c7-02e8-4357-aea2-7ab7b174a29e-400x250.jpg" alt="Laika Studios" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-social">Réseaux Sociaux</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Septembre 2020</span>
+                    <h3 class="pepite-title">Laika Studios : Du stop motion sur TikTok</h3>
+                    <p class="pepite-excerpt">Si vous aussi durant le confinement vous avez cédé aux sirènes de TikTok pour passer le temps…</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+            <a href="https://la-ruee.club/2020/09/20/oliver-sacks/" class="pepite-card">
+                <div class="pepite-img-wrap">
+                    <img src="https://la-ruee.club/wp-content/uploads/2022/08/713b7af6-046b-4e93-994a-4a8acbcdf2cb-400x250.jpg" alt="Oliver Sacks" class="pepite-img" loading="lazy">
+                    <span class="pepite-cat cat-lecture">Lecture</span>
+                </div>
+                <div class="pepite-body">
+                    <span class="pepite-date">Septembre 2020</span>
+                    <h3 class="pepite-title">L'homme qui prenait sa femme pour un chapeau</h3>
+                    <p class="pepite-excerpt">Les récits cliniques du neurologue Oliver Sacks, un recueil qui revient sur des cas extraordinaires…</p>
+                    <span class="pepite-read">Lire plus →</span>
+                </div>
+            </a>
+        </div>
+        <div class="see-all-wrap reveal">
+            <a href="https://la-ruee.club/les-pepites/">Toutes les pépites 💎 →</a>
+        </div>
+    </section>
+
+    <section class="newsletter" id="subscribe">
+        <div class="nl-inner reveal">
+            <div class="nl-emoji">⛏️</div>
+            <h2>Inscrivez-vous pour ne pas rater le prochain <em>wagon</em> ! 🚂</h2>
+            <p>Chaque mois, 3 ou 4 pépites culturelles directement dans votre boîte mail. Zéro spam, que du bon. 💌</p>
+            <div class="nl-form">
+                <input type="email" placeholder="votre@email.com" aria-label="Adresse email">
+                <button type="submit">J'en suis !</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">⛏️ La <span>Ruée</span></div>
+            <div class="footer-social">
+                <a href="https://twitter.com/LaRuee_fr">𝕏 Twitter</a>
+                <a href="https://www.instagram.com/laruee_newsletter/">📸 Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    const ACCESS_CODE = 'pepite2025';
+    function checkGate() {
+        const input = document.getElementById('gateInput').value;
+        if (input === ACCESS_CODE) {
+            document.getElementById('gate').classList.add('hidden');
+            document.getElementById('site').classList.add('visible');
+            initSite();
+        } else {
+            document.getElementById('gateError').textContent = '❌ Code incorrect, essayez encore !';
+            document.getElementById('gateInput').value = '';
+            document.getElementById('gateInput').focus();
+        }
+    }
+    document.getElementById('gateInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkGate(); });
+
+    function initSite() {
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+        const emojis = ['💎', '✨', '🪙', '⭐', '💫', '🌟'];
+        const container = document.getElementById('floatingNuggets');
+        for (let i = 0; i < 18; i++) {
+            const n = document.createElement('div');
+            n.classList.add('nugget-float');
+            n.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            n.style.left = Math.random() * 100 + '%';
+            n.style.top = 20 + Math.random() * 70 + '%';
+            n.style.animationDelay = Math.random() * 7 + 's';
+            n.style.animationDuration = 5 + Math.random() * 5 + 's';
+            n.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+            container.appendChild(n);
+        }
+
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal, .stagger').forEach(el => obs.observe(el));
+
+        let lastSparkle = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastSparkle < 150) return;
+            lastSparkle = now;
+            const s = document.createElement('div');
+            s.classList.add('sparkle');
+            s.textContent = ['✨', '💫', '⭐'][Math.floor(Math.random() * 3)];
+            s.style.left = e.clientX + 'px';
+            s.style.top = e.clientY + 'px';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 800);
+        });
+    }
+</script>
+```
+
+</body>
+</html>
